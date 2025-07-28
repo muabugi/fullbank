@@ -168,6 +168,15 @@ export default function LandingPage() {
 
   return (
     <>
+    <head>
+    <title>Green Valley Bank Digital Banking Reinvented</title>
+    <meta property="og:title" content="Green Valley Bank Digital Banking Reinvented" />
+    <meta property="og:description" content="Experience seamless, secure, and smart banking for the digital age." />
+    <meta property="og:image" content="https://res.cloudinary.com/dfeacsb6l/image/upload/v1753695025/GV_rfm8fi.jpg" />
+    <meta property="og:url" content="https://greenvalleybank.vercel.app/" />
+    <meta property="og:type" content="website" />
+    </head>
+
       <LoadingBeam />
       <div className="min-h-screen bg-background">
         {/* Minimal Landing Page Header */}
@@ -466,12 +475,14 @@ export default function LandingPage() {
           </div>
         </section>
 
+
+
         {/* Big Call to Action Section (moved before footer) */}
         <section className="py-16 bg-gradient-to-br from-[#232526] via-[#414345] to-[#bfc1c2] text-white text-center rounded-2xl shadow-xl mt-16 mb-8">
           <div className="container mx-auto px-4 flex flex-col items-center text-center">
             <h2 className="text-4xl md:text-5xl font-bold mb-4">Ready to Start Your Journey?</h2>
             <p className="text-xl md:text-2xl max-w-2xl mx-auto mb-8">Join thousands of happy customers and experience the future of banking today.</p>
-            <Link href="/register">
+            <Link href="/auth/register">
               <Button size="lg" className="bg-black text-white hover:bg-gray-900 text-xl px-8 py-4 rounded-full shadow-lg">Get Started</Button>
             </Link>
           </div>
