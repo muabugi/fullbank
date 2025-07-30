@@ -32,6 +32,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   if (req.method === 'PATCH') {
     const update = req.body;
     delete update._id;
+    // Normalize registration date field
+    if (update.created_at && !update.createdAt) {
+      update.createdAt = update.created_at;
+      delete update.created_at;
+    }
     let mongoId: ObjectId | undefined = undefined;
     if (typeof id === 'string' && id.length === 24) {
       mongoId = new ObjectId(id);

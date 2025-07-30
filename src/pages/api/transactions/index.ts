@@ -78,7 +78,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             tx.userId || transactionUserId,
             tx.transaction_type,
             parseFloat(tx.amount),
-            tx.description || ''
+            tx.description || '',
+            tx.created_at // pass the date from the transaction object
           );
           createdTransactions.push(transaction);
         }
@@ -129,7 +130,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         transactionUserId,
         transaction_type,
         parseFloat(amount),
-        description || ''
+        description || '',
+        created_at // pass the date from the request
       );
       
       console.log('[TRANSACTIONS] Transaction created:', transaction);

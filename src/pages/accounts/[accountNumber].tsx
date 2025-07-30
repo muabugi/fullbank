@@ -217,64 +217,6 @@ export default function AccountDetails() {
                   </AlertDescription>
                 </Alert>
               )}
-              <Dialog open={isDepositOpen} onOpenChange={setIsDepositOpen}>
-                <DialogTrigger asChild>
-                  <Button variant="outline" className="w-full sm:w-auto border-2 hover:bg-green-50 dark:hover:bg-green-900/20">
-                    <Wallet className="w-4 h-4 mr-2 text-green-600 dark:text-green-400" />
-                    Deposit
-                  </Button>
-                </DialogTrigger>
-                <DialogContent>
-                  <DialogHeader>
-                    <DialogTitle>Make a Deposit</DialogTitle>
-                  </DialogHeader>
-                  <div className="space-y-4 py-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="amount">Amount</Label>
-                      <Input
-                        id="amount"
-                        type="number"
-                        value={amount}
-                        onChange={(e) => setAmount(e.target.value)}
-                        placeholder="Enter amount"
-                      />
-                    </div>
-                    <Button onClick={handleDeposit} className="w-full bg-green-600 hover:bg-green-700 text-white">
-                      Confirm Deposit
-                    </Button>
-                  </div>
-                </DialogContent>
-              </Dialog>
-
-              <Dialog open={isWithdrawOpen} onOpenChange={setIsWithdrawOpen}>
-                <DialogTrigger asChild>
-                  <Button variant="outline" className="w-full sm:w-auto border-2 hover:bg-blue-50 dark:hover:bg-blue-900/20">
-                    <Wallet className="w-4 h-4 mr-2 text-blue-600 dark:text-blue-400" />
-                    Withdraw
-                  </Button>
-                </DialogTrigger>
-                <DialogContent>
-                  <DialogHeader>
-                    <DialogTitle>Make a Withdrawal</DialogTitle>
-                  </DialogHeader>
-                  <div className="space-y-4 py-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="amount">Amount</Label>
-                      <Input
-                        id="amount"
-                        type="number"
-                        value={amount}
-                        onChange={(e) => setAmount(e.target.value)}
-                        placeholder="Enter amount"
-                      />
-                    </div>
-                    <Button onClick={handleWithdraw} className="w-full bg-blue-600 hover:bg-blue-700 text-white">
-                      Confirm Withdrawal
-                    </Button>
-                  </div>
-                </DialogContent>
-              </Dialog>
-
               <Dialog open={isTransferOpen} onOpenChange={setIsTransferOpen}>
                 <DialogTrigger asChild>
                   <Button 
@@ -389,10 +331,6 @@ export default function AccountDetails() {
                 <p className="text-sm text-gray-500">Minimum Balance</p>
                 <p className="font-medium">{formatCurrency(parseFloat(account.minimum_balance))}</p>
               </div>
-              <div>
-                <p className="text-sm text-gray-500">Opened Date</p>
-                <p className="font-medium">{formatDate(account.opened_date)}</p>
-              </div>
             </div>
           </CardContent>
         </Card>
@@ -480,13 +418,9 @@ export default function AccountDetails() {
                   </div>
                   <div className="flex items-center gap-4">
                     <p
-                      className={`font-medium ${
-                        transaction.transaction_type === 'CREDIT'
-                          ? 'text-green-600 dark:text-green-400'
-                          : 'text-red-600 dark:text-red-400'
-                      }`}
+                      className={`font-medium ${['withdrawal', 'DEBIT'].includes((transaction.transaction_type || '').toLowerCase()) ? 'text-red-600 dark:text-red-400' : ['deposit', 'CREDIT'].includes((transaction.transaction_type || '').toLowerCase()) ? 'text-green-600 dark:text-green-400' : ''}`}
                     >
-                      {transaction.transaction_type === 'CREDIT' ? '+' : transaction.transaction_type === 'DEBIT' ? '-' : ''}
+                      {['deposit', 'CREDIT'].includes((transaction.transaction_type || '').toLowerCase()) ? '+' : ['withdrawal', 'DEBIT'].includes((transaction.transaction_type || '').toLowerCase()) ? '-' : ''}
                       {formatCurrency(transaction.amount)}
                     </p>
                     <span className={`px-2 py-1 rounded-full text-xs font-medium ${

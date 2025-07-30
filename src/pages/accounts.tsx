@@ -105,9 +105,6 @@ export default function Accounts() {
                 <p className="text-xs text-gray-200">Available Balance</p>
                 <div className="mt-4 flex items-center justify-between">
                   <span className="text-xs text-gray-300">
-                    Created: {formatDate(account.opened_date)}
-                  </span>
-                  <span className="text-xs text-gray-300">
                     {account.currency}
                   </span>
                 </div>

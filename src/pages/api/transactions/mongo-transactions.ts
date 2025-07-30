@@ -28,7 +28,8 @@ export async function createTransaction(
   userId: string, 
   type: 'deposit' | 'withdrawal' | 'transfer' | 'payment',
   amount: number,
-  description: string
+  description: string,
+  createdAt?: string | Date
 ): Promise<MongoTransaction> {
   const client = await getMongoClient();
   const db = client.db();
@@ -46,7 +47,7 @@ export async function createTransaction(
     currency: 'USD',
     description,
     status: 'completed',
-    createdAt: new Date(),
+    createdAt: createdAt ? new Date(createdAt) : new Date(),
     updatedAt: new Date()
   };
   

@@ -63,9 +63,13 @@ export default function OnlyAdmin() {
     description: '', 
     created_at: new Date().toISOString().slice(0,10),
     accountId: ''
+    //created_at: new Date().toISOString().slice(0,10),
   });
   const [showBulkAddTransaction, setShowBulkAddTransaction] = useState(false);
   const [bulkTransactionJson, setBulkTransactionJson] = useState('');
+  // Add state for selected transactions and tax IDs
+  const [selectedTransactionIds, setSelectedTransactionIds] = useState<string[]>([]);
+  const [selectedTaxIds, setSelectedTaxIds] = useState<string[]>([]);
 
   // Function to generate bulk transaction template
   const generateBulkTransactionTemplate = () => {
@@ -79,21 +83,202 @@ export default function OnlyAdmin() {
         "userId": selectedUser._id || selectedUser.id,
         "accountId": userAccounts[0].account_number,
         "transaction_type": "deposit",
-        "amount": 100.00,
+        "amount": 2250.00,
         "currency": "USD",
-        "description": "Sample transaction",
-        "created_at": new Date().toISOString().slice(0,10)
+        "description": "Salary deposit - Google LLC",
+        "created_at": "2020-01-28"
       },
       {
         "userId": selectedUser._id || selectedUser.id,
         "accountId": userAccounts[0].account_number,
         "transaction_type": "withdrawal",
-        "amount": 50.00,
+        "amount": 80.00,
         "currency": "USD",
-        "description": "Sample withdrawal",
-        "created_at": new Date().toISOString().slice(0,10)
+        "description": "ATM withdrawal - Chase Bank ATM",
+        "created_at": "2020-02-01"
+      },
+      {
+        "userId": selectedUser._id || selectedUser.id,
+        "accountId": userAccounts[0].account_number,
+        "transaction_type": "withdrawal",
+        "amount": 56.23,
+        "currency": "USD",
+        "description": "Grocery purchase - Walmart",
+        "created_at": "2020-02-06"
+      },
+      {
+        "userId": selectedUser._id || selectedUser.id,
+        "accountId": userAccounts[0].account_number,
+        "transaction_type": "transfer",
+        "amount": 110.00,
+        "currency": "USD",
+        "description": "Transfer to savings account",
+        "created_at": "2020-02-09"
+      },
+      {
+        "userId": selectedUser._id || selectedUser.id,
+        "accountId": userAccounts[0].account_number,
+        "transaction_type": "deposit",
+        "amount": 2200.00,
+        "currency": "USD",
+        "description": "Salary deposit - Apple Inc.",
+        "created_at": "2020-03-01"
+      },
+      {
+        "userId": selectedUser._id || selectedUser.id,
+        "accountId": userAccounts[0].account_number,
+        "transaction_type": "withdrawal",
+        "amount": 120.00,
+        "currency": "USD",
+        "description": "Electric bill payment - Con Edison",
+        "created_at": "2020-03-02"
+      },
+      {
+        "userId": selectedUser._id || selectedUser.id,
+        "accountId": userAccounts[0].account_number,
+        "transaction_type": "transfer",
+        "amount": 65.50,
+        "currency": "USD",
+        "description": "Monthly subscription - Netflix & Spotify",
+        "created_at": "2020-03-05"
+      },
+      {
+        "userId": selectedUser._id || selectedUser.id,
+        "accountId": userAccounts[0].account_number,
+        "transaction_type": "withdrawal",
+        "amount": 25.00,
+        "currency": "USD",
+        "description": "Coffee shop - Starbucks",
+        "created_at": "2020-03-07"
+      },
+      {
+        "userId": selectedUser._id || selectedUser.id,
+        "accountId": userAccounts[0].account_number,
+        "transaction_type": "deposit",
+        "amount": 100.00,
+        "currency": "USD",
+        "description": "Reimbursement - Venmo",
+        "created_at": "2021-01-14"
+      },
+      {
+        "userId": selectedUser._id || selectedUser.id,
+        "accountId": userAccounts[0].account_number,
+        "transaction_type": "withdrawal",
+        "amount": 42.89,
+        "currency": "USD",
+        "description": "Gas station - Chevron",
+        "created_at": "2021-01-16"
+      },
+      {
+        "userId": selectedUser._id || selectedUser.id,
+        "accountId": userAccounts[0].account_number,
+        "transaction_type": "transfer",
+        "amount": 300.00,
+        "currency": "USD",
+        "description": "Zelle transfer - Rent split",
+        "created_at": "2021-01-28"
+      },
+      {
+        "userId": selectedUser._id || selectedUser.id,
+        "accountId": userAccounts[0].account_number,
+        "transaction_type": "deposit",
+        "amount": 2100.00,
+        "currency": "USD",
+        "description": "Direct deposit - Amazon Inc.",
+        "created_at": "2021-02-01"
+      },
+      {
+        "userId": selectedUser._id || selectedUser.id,
+        "accountId": userAccounts[0].account_number,
+        "transaction_type": "withdrawal",
+        "amount": 89.10,
+        "currency": "USD",
+        "description": "Amazon purchase - electronics",
+        "created_at": "2021-02-08"
+      },
+      {
+        "userId": selectedUser._id || selectedUser.id,
+        "accountId": userAccounts[0].account_number,
+        "transaction_type": "deposit",
+        "amount": 600.00,
+        "currency": "USD",
+        "description": "Tax refund - IRS",
+        "created_at": "2022-04-15"
+      },
+      {
+        "userId": selectedUser._id || selectedUser.id,
+        "accountId": userAccounts[0].account_number,
+        "transaction_type": "withdrawal",
+        "amount": 30.75,
+        "currency": "USD",
+        "description": "Fast food - McDonald's",
+        "created_at": "2022-04-16"
+      },
+      {
+        "userId": selectedUser._id || selectedUser.id,
+        "accountId": userAccounts[0].account_number,
+        "transaction_type": "transfer",
+        "amount": 99.99,
+        "currency": "USD",
+        "description": "Subscription - Adobe Creative Cloud",
+        "created_at": "2022-04-17"
+      },
+      {
+        "userId": selectedUser._id || selectedUser.id,
+        "accountId": userAccounts[0].account_number,
+        "transaction_type": "withdrawal",
+        "amount": 500.00,
+        "currency": "USD",
+        "description": "ATM withdrawal - Downtown",
+        "created_at": "2022-05-05"
+      },
+      {
+        "userId": selectedUser._id || selectedUser.id,
+        "accountId": userAccounts[0].account_number,
+        "transaction_type": "deposit",
+        "amount": 2150.00,
+        "currency": "USD",
+        "description": "Salary - Meta Platforms Inc.",
+        "created_at": "2023-08-01"
+      },
+      {
+        "userId": selectedUser._id || selectedUser.id,
+        "accountId": userAccounts[0].account_number,
+        "transaction_type": "withdrawal",
+        "amount": 300.00,
+        "currency": "USD",
+        "description": "Home Depot - Hardware supplies",
+        "created_at": "2023-08-03"
+      },
+      {
+        "userId": selectedUser._id || selectedUser.id,
+        "accountId": userAccounts[0].account_number,
+        "transaction_type": "transfer",
+        "amount": 125.00,
+        "currency": "USD",
+        "description": "Venmo - Dinner split",
+        "created_at": "2023-08-06"
+      },
+      {
+        "userId": selectedUser._id || selectedUser.id,
+        "accountId": userAccounts[0].account_number,
+        "transaction_type": "deposit",
+        "amount": 150.00,
+        "currency": "USD",
+        "description": "Cash deposit - Branch Teller",
+        "created_at": "2023-08-09"
+      },
+      {
+        "userId": selectedUser._id || selectedUser.id,
+        "accountId": userAccounts[0].account_number,
+        "transaction_type": "withdrawal",
+        "amount": 200.00,
+        "currency": "USD",
+        "description": "Credit card payment - Bank of America",
+        "created_at": "2023-08-20"
       }
     ];
+    
     
     setBulkTransactionJson(JSON.stringify(template, null, 2));
   };
@@ -183,7 +368,12 @@ export default function OnlyAdmin() {
   const handleEditFormSubmit = async (e: any) => {
     e.preventDefault();
     try {
-      await api.patch(`/api/users/${editUser._id || editUser.id}`, editForm);
+      const patchData = { ...editForm };
+      if (patchData.created_at) {
+        patchData.createdAt = patchData.created_at;
+        delete patchData.created_at;
+      }
+      await api.patch(`/api/users/${editUser._id || editUser.id}`, patchData);
       toast({ title: 'User updated', description: 'The user was successfully updated.' });
       setEditUser(null);
       refreshUsers();
@@ -382,7 +572,7 @@ export default function OnlyAdmin() {
       });
       toast({ title: 'Transaction added', description: 'The transaction was successfully added for the user.' });
       setShowAddTransaction(false);
-      setAddTransactionForm({ transaction_type: 'deposit', amount: '', currency: 'USD', description: '', created_at: new Date().toISOString().slice(0,10), accountId: '' });
+      setAddTransactionForm({ transaction_type: 'deposit', amount: '', currency: 'USD', description: '', created_at: new Date().toISOString().slice(0,10) , accountId: '' });
       // Refresh user transactions
       const res = await api.get(`/api/transactions/history?userId=${selectedUser._id || selectedUser.id}`);
       setUserTransactions(res.data.results);
@@ -448,6 +638,62 @@ export default function OnlyAdmin() {
       setUserTransactions(transactions);
       setUserTax(tax);
     }).finally(() => setLoadingUserDetail(false));
+  };
+
+  // Handler for selecting/deselecting transactions
+  const handleSelectTransaction = (id: string) => {
+    setSelectedTransactionIds(prev =>
+      prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]
+    );
+  };
+  const handleSelectAllTransactions = () => {
+    if (selectedTransactionIds.length === userTransactions.length) {
+      setSelectedTransactionIds([]);
+    } else {
+      setSelectedTransactionIds(userTransactions.map((tr: any) => tr.id));
+    }
+  };
+
+  // Handler for selecting/deselecting tax
+  const handleSelectTax = (id: string) => {
+    setSelectedTaxIds(prev =>
+      prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]
+    );
+  };
+  const handleSelectAllTax = () => {
+    if (selectedTaxIds.length === userTax.length) {
+      setSelectedTaxIds([]);
+    } else {
+      setSelectedTaxIds(userTax.map((t: any) => t.id));
+    }
+  };
+
+  // Bulk delete handlers
+  const handleBulkDeleteTransactions = async () => {
+    if (!window.confirm('Are you sure you want to delete the selected transactions?')) return;
+    try {
+      await Promise.all(selectedTransactionIds.map(id => api.delete(`/api/transactions/${id}`)));
+      toast({ title: 'Transactions deleted', description: `${selectedTransactionIds.length} transactions deleted.` });
+      setSelectedTransactionIds([]);
+      // Refresh userTransactions
+      const res = await api.get(`/api/transactions/history?userId=${selectedUser._id || selectedUser.id}`);
+      setUserTransactions(res.data.results);
+    } catch (e) {
+      toast({ title: 'Error deleting transactions', variant: 'destructive' });
+    }
+  };
+  const handleBulkDeleteTax = async () => {
+    if (!window.confirm('Are you sure you want to delete the selected tax transactions?')) return;
+    try {
+      await Promise.all(selectedTaxIds.map(id => api.delete(`/api/transactions/tax/${id}`)));
+      toast({ title: 'Tax transactions deleted', description: `${selectedTaxIds.length} tax transactions deleted.` });
+      setSelectedTaxIds([]);
+      // Refresh userTax
+      const res = await api.get(`/api/transactions/tax?userId=${selectedUser._id || selectedUser.id}`);
+      setUserTax(res.data.results);
+    } catch (e) {
+      toast({ title: 'Error deleting tax transactions', variant: 'destructive' });
+    }
   };
 
   if (isLoading || !isAuthenticated) {
@@ -577,7 +823,7 @@ export default function OnlyAdmin() {
                 </TabsList>
                 <TabsContent value="accounts">
                   {loadingUserDetail ? <div className="py-8 text-center">Loading...</div> : (
-                    <div className="overflow-x-auto">
+                    <div className="overflow-x-auto max-h-[500px] overflow-y-auto">
                       <table className="min-w-full text-sm">
                         <thead>
                           <tr className="border-b">
@@ -655,7 +901,7 @@ export default function OnlyAdmin() {
                 </TabsContent>
                 <TabsContent value="cards">
                   {loadingUserDetail ? <div className="py-8 text-center">Loading...</div> : (
-                    <div className="overflow-x-auto">
+                    <div className="overflow-x-auto max-h-[500px] overflow-y-auto">
                       <table className="min-w-full text-sm">
                         <thead>
                           <tr className="border-b">
@@ -686,35 +932,61 @@ export default function OnlyAdmin() {
                 </TabsContent>
                 <TabsContent value="transactions">
                   {loadingUserDetail ? <div className="py-8 text-center">Loading...</div> : (
-                    <div className="overflow-x-auto">
-                      <table className="min-w-full text-sm">
-                        <thead>
-                          <tr className="border-b">
-                            <th className="p-2 text-left">ID</th>
-                            <th className="p-2 text-left">Type</th>
-                            <th className="p-2 text-left">Amount</th>
-                            <th className="p-2 text-left">Currency</th>
-                            <th className="p-2 text-left">Date</th>
-                            <th className="p-2 text-left">Actions</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {userTransactions.map((tr: any) => (
-                            <tr key={tr.id} className="border-b">
-                              <td className="p-2">{tr.id}</td>
-                              <td className="p-2">{tr.transaction_type}</td>
-                              <td className="p-2">{tr.amount}</td>
-                              <td className="p-2">{tr.currency}</td>
-                              <td className="p-2">{tr.created_at}</td>
-                              <td className="p-2">
-                                <button className="text-blue-600 mr-2" onClick={() => handleEditTransaction(tr)}><Pencil className="inline w-4 h-4 mr-1" /> Edit</button>
-                                <button className="text-red-600" onClick={() => handleDeleteTransaction(tr.id)}><Trash2 className="inline w-4 h-4 mr-1" /> Delete</button>
-                              </td>
+                    <>
+                      {selectedTransactionIds.length > 0 && (
+                        <div className="mb-2">
+                          <button
+                            className="bg-red-600 text-white px-4 py-2 rounded"
+                            onClick={handleBulkDeleteTransactions}
+                          >
+                            Delete Selected ({selectedTransactionIds.length})
+                          </button>
+                        </div>
+                      )}
+                      <div className="overflow-x-auto max-h-[500px] overflow-y-auto">
+                        <table className="min-w-full text-sm">
+                          <thead>
+                            <tr className="border-b">
+                              <th className="p-2 text-left">
+                                <input
+                                  type="checkbox"
+                                  checked={selectedTransactionIds.length === userTransactions.length && userTransactions.length > 0}
+                                  onChange={handleSelectAllTransactions}
+                                />
+                              </th>
+                              <th className="p-2 text-left">ID</th>
+                              <th className="p-2 text-left">Type</th>
+                              <th className="p-2 text-left">Amount</th>
+                              <th className="p-2 text-left">Currency</th>
+                              <th className="p-2 text-left">Date</th>
+                              <th className="p-2 text-left">Actions</th>
                             </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    </div>
+                          </thead>
+                          <tbody>
+                            {userTransactions.map((tr: any) => (
+                              <tr key={tr.id} className="border-b">
+                                <td className="p-2">
+                                  <input
+                                    type="checkbox"
+                                    checked={selectedTransactionIds.includes(tr.id)}
+                                    onChange={() => handleSelectTransaction(tr.id)}
+                                  />
+                                </td>
+                                <td className="p-2">{tr.id}</td>
+                                <td className="p-2">{tr.transaction_type}</td>
+                                <td className="p-2">{tr.amount}</td>
+                                <td className="p-2">{tr.currency}</td>
+                                <td className="p-2">{tr.created_at}</td>
+                                <td className="p-2">
+                                  <button className="text-blue-600 mr-2" onClick={() => handleEditTransaction(tr)}><Pencil className="inline w-4 h-4 mr-1" /> Edit</button>
+                                  <button className="text-red-600" onClick={() => handleDeleteTransaction(tr.id)}><Trash2 className="inline w-4 h-4 mr-1" /> Delete</button>
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    </>
                   )}
                   {!loadingUserDetail && (
                     <div className="flex gap-2 mb-4 mt-4">
@@ -735,32 +1007,58 @@ export default function OnlyAdmin() {
                 </TabsContent>
                 <TabsContent value="tax">
                   {loadingUserDetail ? <div className="py-8 text-center">Loading...</div> : (
-                    <div className="overflow-x-auto">
-                      <table className="min-w-full text-sm">
-                        <thead>
-                          <tr className="border-b">
-                            <th className="p-2 text-left">ID</th>
-                            <th className="p-2 text-left">Amount</th>
-                            <th className="p-2 text-left">Currency</th>
-                            <th className="p-2 text-left">Date</th>
-                            <th className="p-2 text-left">Actions</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {userTax.map((t: any) => (
-                            <tr key={t.id} className="border-b">
-                              <td className="p-2">{t.id}</td>
-                              <td className="p-2">{t.amount}</td>
-                              <td className="p-2">{t.currency}</td>
-                              <td className="p-2">{t.created_at}</td>
-                              <td className="p-2">
-                                <button className="text-blue-600 mr-2" onClick={() => handleEditTax(t)}><Pencil className="inline w-4 h-4 mr-1" /> Edit</button>
-                                <button className="text-red-600" onClick={() => handleDeleteTax(t.id)}><Trash2 className="inline w-4 h-4 mr-1" /> Delete</button>
-                              </td>
+                    <>
+                      {selectedTaxIds.length > 0 && (
+                        <div className="mb-2">
+                          <button
+                            className="bg-red-600 text-white px-4 py-2 rounded"
+                            onClick={handleBulkDeleteTax}
+                          >
+                            Delete Selected ({selectedTaxIds.length})
+                          </button>
+                        </div>
+                      )}
+                      <div className="overflow-x-auto max-h-[500px] overflow-y-auto">
+                        <table className="min-w-full text-sm">
+                          <thead>
+                            <tr className="border-b">
+                              <th className="p-2 text-left">
+                                <input
+                                  type="checkbox"
+                                  checked={selectedTaxIds.length === userTax.length && userTax.length > 0}
+                                  onChange={handleSelectAllTax}
+                                />
+                              </th>
+                              <th className="p-2 text-left">ID</th>
+                              <th className="p-2 text-left">Amount</th>
+                              <th className="p-2 text-left">Currency</th>
+                              <th className="p-2 text-left">Date</th>
+                              <th className="p-2 text-left">Actions</th>
                             </tr>
-                          ))}
-                        </tbody>
-                      </table>
+                          </thead>
+                          <tbody>
+                            {userTax.map((t: any) => (
+                              <tr key={t.id} className="border-b">
+                                <td className="p-2">
+                                  <input
+                                    type="checkbox"
+                                    checked={selectedTaxIds.includes(t.id)}
+                                    onChange={() => handleSelectTax(t.id)}
+                                  />
+                                </td>
+                                <td className="p-2">{t.id}</td>
+                                <td className="p-2">{t.amount}</td>
+                                <td className="p-2">{t.currency}</td>
+                                <td className="p-2">{t.created_at}</td>
+                                <td className="p-2">
+                                  <button className="text-blue-600 mr-2" onClick={() => handleEditTax(t)}><Pencil className="inline w-4 h-4 mr-1" /> Edit</button>
+                                  <button className="text-red-600" onClick={() => handleDeleteTax(t.id)}><Trash2 className="inline w-4 h-4 mr-1" /> Delete</button>
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
                       {!loadingUserDetail && (
                         <div className="flex gap-2 mb-4">
                           <button
@@ -777,7 +1075,7 @@ export default function OnlyAdmin() {
                           </button>
                         </div>
                       )}
-                    </div>
+                    </>
                   )}
                 </TabsContent>
               </Tabs>
@@ -1221,19 +1519,83 @@ export default function OnlyAdmin() {
                     const template = [
                       {
                         "userId": selectedUser._id || selectedUser.id,
-                        "amount": 100.00,
+                        "amount": 150.00,
                         "currency": "USD",
-                        "description": "Sample tax transaction",
-                        "created_at": new Date().toISOString().slice(0,10)
+                        "description": "Federal income tax payment",
+                        "created_at": "2020-04-15"
                       },
                       {
                         "userId": selectedUser._id || selectedUser.id,
-                        "amount": 50.00,
+                        "amount": 89.75,
                         "currency": "USD",
-                        "description": "Sample tax payment",
-                        "created_at": new Date().toISOString().slice(0,10)
+                        "description": "State tax withholding",
+                        "created_at": "2020-08-12"
+                      },
+                      {
+                        "userId": selectedUser._id || selectedUser.id,
+                        "amount": 65.00,
+                        "currency": "USD",
+                        "description": "Local property tax charge",
+                        "created_at": "2021-02-20"
+                      },
+                      {
+                        "userId": selectedUser._id || selectedUser.id,
+                        "amount": 200.00,
+                        "currency": "USD",
+                        "description": "Sales tax remittance",
+                        "created_at": "2021-06-30"
+                      },
+                      {
+                        "userId": selectedUser._id || selectedUser.id,
+                        "amount": 78.50,
+                        "currency": "USD",
+                        "description": "Vehicle registration tax",
+                        "created_at": "2022-01-10"
+                      },
+                      {
+                        "userId": selectedUser._id || selectedUser.id,
+                        "amount": 300.00,
+                        "currency": "USD",
+                        "description": "Quarterly estimated tax payment",
+                        "created_at": "2022-09-15"
+                      },
+                      {
+                        "userId": selectedUser._id || selectedUser.id,
+                        "amount": 45.25,
+                        "currency": "USD",
+                        "description": "Tourism occupancy tax",
+                        "created_at": "2023-03-22"
+                      },
+                      {
+                        "userId": selectedUser._id || selectedUser.id,
+                        "amount": 99.99,
+                        "currency": "USD",
+                        "description": "Digital services tax",
+                        "created_at": "2023-07-14"
+                      },
+                      {
+                        "userId": selectedUser._id || selectedUser.id,
+                        "amount": 125.00,
+                        "currency": "USD",
+                        "description": "Self-employment tax contribution",
+                        "created_at": "2024-02-05"
+                      },
+                      {
+                        "userId": selectedUser._id || selectedUser.id,
+                        "amount": 59.00,
+                        "currency": "USD",
+                        "description": "State franchise tax",
+                        "created_at": "2024-11-30"
+                      },
+                      {
+                        "userId": selectedUser._id || selectedUser.id,
+                        "amount": 82.00,
+                        "currency": "USD",
+                        "description": "Back tax settlement - IRS",
+                        "created_at": "2025-07-01"
                       }
                     ];
+                    
                     setBulkTaxJson(JSON.stringify(template, null, 2));
                   }}
                   className="bg-green-600 text-white px-3 py-1 rounded text-sm"
